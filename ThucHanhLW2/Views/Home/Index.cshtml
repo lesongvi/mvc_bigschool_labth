@@ -1,0 +1,67 @@
+﻿@model ThucHanhLW2.ViewModels.CourseViewModel
+@{
+    ViewBag.Title = "Home Page";
+}
+
+<ul class="course">
+    @foreach (var course in Model.UpComingCourses)
+    {
+    <li>
+        <div class="date">
+            <div class="month">
+                @course.DateTime.ToString("MM")
+            </div>
+            <div class="day">
+                @course.DateTime.ToString("dd")
+            </div>
+        </div>
+        <div class="details">
+            <div class="lecturer">
+                @course.Lecturer.Name
+                @if (Model.ShowAction)
+                {
+                    <button class="btn btn-default btn-sm js-toggle-follow" data-user-id="@course.LecturerId">Follow</button>
+                }
+            </div>
+            <div class="category">
+                @course.Category.Name
+            </div>
+            @if (Model.ShowAction)
+            {
+                <button data-course-id="@course.Id" class="btn btn-default btn-sm js-toggle-attendance">Going?</button>
+            }
+        </div>
+    </li>
+    }
+</ul>
+
+@section scripts
+{
+    <script>
+        $(document).ready(() => {
+            $(".js-toggle-attendance").click(e => {
+                var btn = $(e.target);
+                $.post("/api/attendances", { courseId: btn.attr("data-course-id") })
+                    .done(() => {
+                        btn
+                            .removeClass("btn-default")
+                            .addClass("btn-info")
+                            .text("Going");
+                    })
+                    .fail(() => {
+                        alert("Something failed!");
+                    });
+            });
+        });
+        $(".js-toggle-follow").click(e => {
+            var btn = $(e.target);
+            $.post("/api/followings", { followeeId: btn.attr("data-user-id") })
+                .done(() => {
+                    btn.text("Following");
+                })
+                .fail(() => {
+                    alert("Something failed");
+                })
+        })
+    </script>
+}
