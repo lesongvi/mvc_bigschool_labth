@@ -22,8 +22,12 @@ namespace ThucHanhLW2.Controllers.Api
         public IHttpActionResult Attend(AttendanceDto attendanceDto)
         {
             var userId = User.Identity.GetUserId();
-            if (_dbContext.Attendances.Any(a => a.AttendeeId == userId && a.CourseId == attendanceDto.CourseId))
+
+            if (_dbContext.Courses.Any(a => a.LecturerId == userId && a.Id == attendanceDto.CourseId))
+                return BadRequest("It's your course!");
+            else if (_dbContext.Attendances.Any(a => a.AttendeeId == userId && a.CourseId == attendanceDto.CourseId))
                 return BadRequest("The Attendance already exists!");
+
             var attendance = new Attendance
             {
                 CourseId = attendanceDto.CourseId,
