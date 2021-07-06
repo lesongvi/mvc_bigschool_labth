@@ -22,7 +22,9 @@ namespace ThucHanhLW2.Controllers.Api
         public IHttpActionResult Follow (FollowingDto followingDto)
         {
             var userId = User.Identity.GetUserId();
-            if (_dbContext.Followings.Any(f => f.FollowerId == userId && f.FolloweeId == followingDto.FolloweeId))
+            if (followingDto.FolloweeId == userId)
+                return BadRequest("You can't follow yourself");
+            else if (_dbContext.Followings.Any(f => f.FollowerId == userId && f.FolloweeId == followingDto.FolloweeId))
                 return BadRequest("Following already exists!");
             var following = new Following
             {
