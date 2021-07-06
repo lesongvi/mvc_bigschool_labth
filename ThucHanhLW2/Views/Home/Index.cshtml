@@ -39,29 +39,8 @@
 {
     <script>
         $(document).ready(() => {
-            $(".js-toggle-attendance").click(e => {
-                var btn = $(e.target);
-                $.post("/api/attendances", { courseId: btn.attr("data-course-id") })
-                    .done(() => {
-                        btn
-                            .removeClass("btn-default")
-                            .addClass("btn-info")
-                            .text("Going");
-                    })
-                    .fail(() => {
-                        alert("Something failed!");
-                    });
-            });
+            CourseController.init();
+            FollowController.init();
         });
-        $(".js-toggle-follow").click(e => {
-            var btn = $(e.target);
-            $.post("/api/followings", { followeeId: btn.attr("data-user-id") })
-                .done(() => {
-                    btn.text("Following");
-                })
-                .fail(() => {
-                    alert("Something failed");
-                })
-        })
     </script>
 }

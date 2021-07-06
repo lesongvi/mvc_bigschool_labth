@@ -7,7 +7,7 @@ using System.Web.Http;
 using ThucHanhLW2.Models;
 using ThucHanhLW2.DTOs;
 
-namespace ThucHanhLW2.Controllers
+namespace ThucHanhLW2.Controllers.Api
 {
     [Authorize]
     public class AttendancesController : ApiController
@@ -31,6 +31,28 @@ namespace ThucHanhLW2.Controllers
             };
 
             _dbContext.Attendances.Add(attendance);
+            _dbContext.SaveChanges();
+
+            return Ok();
+        }
+
+        [HttpGet]
+        public IEnumerable<Attendance> AttendingList()
+        {
+            var userId = User.Identity.GetUserId();
+
+            return _dbContext.Attendances
+                .Where(a => a.AttendeeId == userId)
+                .ToList();
+        }
+
+        [HttpDelete]
+        public IHttpActionResult Cancel(int id)
+        {
+            var userId = User.Identity.GetUserId();
+            var attend = _dbContext.Attendances.Single(c => c.CourseId == id && c.AttendeeId == userId);
+
+            _dbContext.Attendances.Remove(attend);
             _dbContext.SaveChanges();
 
             return Ok();

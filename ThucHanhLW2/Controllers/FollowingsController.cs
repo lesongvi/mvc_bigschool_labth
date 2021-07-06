@@ -1,36 +1,59 @@
-﻿using System.Web.Http;
-using ThucHanhLW2.DTOs;
-using ThucHanhLW2.Models;
-using Microsoft.AspNet.Identity;
+﻿using Microsoft.AspNet.Identity;
+using System;
+using System.Collections.Generic;
+using System.Data;
+using System.Data.Entity;
 using System.Linq;
+using System.Net;
+using System.Web;
+using System.Web.Mvc;
+using ThucHanhLW2.Models;
+using ThucHanhLW2.ViewModels;
 
 namespace ThucHanhLW2.Controllers
 {
-    public class FollowingsController : ApiController
+    public class FollowingsController : Controller
     {
-        private ApplicationDbContext _dbContext;
+        private readonly ApplicationDbContext _dbContext;
 
         public FollowingsController ()
         {
             _dbContext = new ApplicationDbContext();
         }
 
-        [HttpPost]
-        public IHttpActionResult Follow (FollowingDto followingDto)
+        // GET: Followings
+        public ActionResult Index()
+        {
+            var followings = _dbContext.Followings.Include(f => f.Followee).Include(f => f.Follower);
+            return View(followings.ToList());
+        }
+
+        [Authorize]
+        public ActionResult Following()
         {
             var userId = User.Identity.GetUserId();
-            if (_dbContext.Followings.Any(f => f.FollowerId == userId && f.FolloweeId == followingDto.FolloweeId))
-                return BadRequest("Following already exists!");
-            var following = new Following
+
+            var followings = _dbContext.Followings
+                .Where(a => a.FollowerId == userId)
+                .Select(u => u.Followee)
+                .ToList();
+
+            var vm = new CourseViewModel
             {
-                FollowerId = userId,
-                FolloweeId = followingDto.FolloweeId
+                Followings = followings,
+                ShowAction = User.Identity.IsAuthenticated
             };
 
-            _dbContext.Followings.Add(following);
-            _dbContext.SaveChanges();
+            return View(vm);
+        }
 
-            return Ok();
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                _dbContext.Dispose();
+            }
+            base.Dispose(disposing);
         }
     }
 }

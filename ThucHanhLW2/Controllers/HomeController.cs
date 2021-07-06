@@ -17,10 +17,11 @@ namespace ThucHanhLW2.Controllers
         }
         public ActionResult Index()
         {
-            var upComingCourses = _dbContext.Courses
+            IEnumerable<Course> upComingCourses = _dbContext.Courses
                 .Include("Lecturer")
                 .Include("Category")
-                .Where(c => c.DateTime > DateTime.Now);
+                .Where(c => c.DateTime > DateTime.Now)
+                .Where(ucc => ucc.IsCanceled == false);
 
             var vm = new CourseViewModel
             {

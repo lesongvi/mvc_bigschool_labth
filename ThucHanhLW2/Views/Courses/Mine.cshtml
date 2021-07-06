@@ -1,0 +1,60 @@
+﻿@model IEnumerable<ThucHanhLW2.Models.Course>
+
+@{
+    ViewBag.Title = "Mine";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Khóa học của tôi</h2>
+
+<ul class="course">
+@foreach (var item in Model) {
+    <li>
+        <div class="date">
+            <div class="month">
+                @item.DateTime.ToString("MM")
+            </div>
+            <div class="day">
+                @item.DateTime.ToString("dd")
+            </div>
+        </div>
+        <div class="details">
+            <div class="lecturer">
+                @item.Lecturer.Name
+            </div>
+            <div class="category">
+                @item.Category.Name
+            </div>
+        </div>
+        <div class="action">
+            <a href="@Url.Action("Edit", "Courses", new { id = item.Id })">Edit</a> | <a href="#" class="js-cancel-course" data-course-id="@item.Id">Cancel</a>
+        </div>
+    </li>
+}
+</ul>
+@section scripts
+{
+    <script>
+        $(document).ready(() => {
+            $(".js-cancel-course").click(e => {
+                e.preventDefault();
+                var link = $(e.target);
+                bootbox.confirm("Are you sure to cancel?",
+                    () => {
+                        $.ajax({
+                            url: "/api/courses" + link.attr("data-course-id"),
+                            method: "DELETE"
+                        })
+                            .done(() => {
+                                link.parents("li").fadeOut(() => {
+                                    $(this).remove();
+                                });
+                            })
+                            .fail(() => {
+                                alert("Something failed!");
+                            });
+                    });
+            });
+        });
+    </script>
+}
