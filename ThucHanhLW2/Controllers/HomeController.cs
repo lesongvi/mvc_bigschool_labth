@@ -32,18 +32,14 @@ namespace ThucHanhLW2.Controllers
             return View(vm);
         }
 
-        public ActionResult About()
+        public ActionResult Details(int id)
         {
-            ViewBag.Message = "Your application description page.";
+            var course = _dbContext.Courses
+                .Include("Category")
+                .Include("Lecturer")
+                .Single(c => c.Id == id);
 
-            return View();
-        }
-
-        public ActionResult Contact()
-        {
-            ViewBag.Message = "Your contact page.";
-
-            return View();
+            return View(course);
         }
     }
 }

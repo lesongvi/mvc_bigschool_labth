@@ -12,6 +12,7 @@ namespace ThucHanhLW2.Models
         public byte Id { get; set; }
         [Required]
         [StringLength(255)]
+        [Display(Name = "Loại")]
         public string Name { get; set; }
     }
 }

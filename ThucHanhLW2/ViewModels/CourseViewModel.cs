@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Web;
 using ThucHanhLW2.Models;
 
 namespace ThucHanhLW2.ViewModels
@@ -18,6 +16,7 @@ namespace ThucHanhLW2.ViewModels
         [FutureDate]
         public string Date { get; set; }
         [Required]
+        [ValidTime]
         public string Time { get; set; }
         [Required]
         public byte Category { get; set; }

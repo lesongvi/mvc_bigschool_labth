@@ -13,6 +13,7 @@ namespace ThucHanhLW2.Models
     {
         [Required]
         [StringLength(255)]
+        [Display(Name = "Tên giảng viên")]
         public string Name { get; set; }
 
         public ICollection<Following> Followers { get; set; }

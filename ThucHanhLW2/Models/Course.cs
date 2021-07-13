@@ -15,7 +15,9 @@ namespace ThucHanhLW2.Models
         public string LecturerId { get; set; }
         [Required]
         [StringLength(255)]
+        [Display(Name = "Địa điểm")]
         public string Place { get; set; }
+        [Display(Name = "Ngày bắt đầu")]
         public DateTime DateTime { get; set; }
         public Category Category { get; set; }
         [Required]

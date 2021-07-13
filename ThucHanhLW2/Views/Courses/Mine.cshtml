@@ -27,7 +27,9 @@
             </div>
         </div>
         <div class="action">
-            <a href="@Url.Action("Edit", "Courses", new { id = item.Id })">Edit</a> | <a href="#" class="js-cancel-course" data-course-id="@item.Id">Cancel</a>
+            <a href="@Url.Action("Edit", "Courses", new { id = item.Id })">Edit</a> |
+            <a href="#" class="js-cancel-course" data-course-id="@item.Id">Cancel</a> |
+            @Html.ActionLink("Chi tiết khóa học", "Details", "Home", new { id = item.Id }, new { @class = "" })
         </div>
     </li>
 }
@@ -40,21 +42,22 @@
                 e.preventDefault();
                 var link = $(e.target);
                 bootbox.confirm("Are you sure to cancel?",
-                    () => {
-                        $.ajax({
-                            url: "/api/courses" + link.attr("data-course-id"),
-                            method: "DELETE"
-                        })
-                            .done(() => {
-                                link.parents("li").fadeOut(() => {
-                                    $(this).remove();
-                                });
+                    confirm => {
+                        if (confirm)
+                            $.ajax({
+                                url: "/api/courses/" + link.attr("data-course-id"),
+                                method: "DELETE"
                             })
-                            .fail(() => {
-                                alert("Something failed!");
-                            });
+                                .done(() => {
+                                    link.parents("li").fadeOut(() => {
+                                        $(this).remove();
+                                    });
+                                })
+                                .fail(e => {
+                                    bootbox.alert(typeof e.responseJSON.Message !== "undefined" ? e.responseJSON.Message : "Something failed!");
+                                });
                     });
-            });
         });
+    });
     </script>
 }

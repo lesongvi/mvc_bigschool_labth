@@ -30,6 +30,7 @@
             {
                 <button data-course-id="@course.Id" class="btn btn-default btn-sm js-toggle-attendance">Going?</button>
             }
+            @Html.ActionLink("Chi tiết khóa học", "Details", "Home", new { id = course.Id }, new { @class = "" })
         </div>
     </li>
     }

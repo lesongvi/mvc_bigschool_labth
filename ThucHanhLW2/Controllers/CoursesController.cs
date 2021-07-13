@@ -86,6 +86,7 @@ namespace ThucHanhLW2.Controllers
             var mineCourses = _dbContext.Courses
                 .Where(a => a.LecturerId == userId)
                 .Where(a => a.DateTime >= DateTime.Now)
+                .Where(a => !a.IsCanceled)
                 .Include("Lecturer")
                 .Include("Category")
                 .ToList();

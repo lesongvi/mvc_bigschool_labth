@@ -38,8 +38,8 @@
         var text = (btn.text() == "Following") ? "Follow" : "Following";
         btn.toggleClass("btn-info").toggleClass("btn-default").text(text);
     }
-    var fail = () => {
-        alert("Something failed!");
+    var fail = (e) => {
+        bootbox.alert(typeof e.responseJSON.Message != "undefined" ? e.responseJSON.Message : "Something failed!");
     }
     return {
         init: init

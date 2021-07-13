@@ -1,9 +1,32 @@
 ﻿@model ThucHanhLW2.ViewModels.CourseViewModel
+
 @{
-    ViewBag.Title = "Attending";
+    ViewBag.Title = "Tìm kiếm";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
+<h2>Tìm kiếm</h2>
+
+<div class="container-fluid">
+    <form>
+        <div class="row">
+            <div class="col-md-2">
+                @Html.DropDownListFor(m => m.Category, new SelectList(Model.Categories, "Id", "Name"), "ALL", new { @class = "form-control" })
+            </div>
+            <div class="col-md-5">
+                <input type="search" class="form-control" name="query" placeholder="Tên giảng viên" />
+            </div>
+            <div class="col-md-4">
+                <input type="search" class="form-control" name="startDate" placeholder="Ngày bắt đầu học" />
+            </div>
+            <div class="col-md-1">
+                <button type="submit" class="btn btn-danger">
+                    Tìm kiếm
+                </button>
+            </div>
+        </div>
+    </form>
+</div>
 
 <ul class="course">
     @foreach (var course in Model.UpComingCourses)

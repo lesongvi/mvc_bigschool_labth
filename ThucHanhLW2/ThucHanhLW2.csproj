@@ -185,6 +185,7 @@
     <Compile Include="Controllers\FollowingsController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
+    <Compile Include="Controllers\SearchController.cs" />
     <Compile Include="DTOs\AttendanceDto.cs" />
     <Compile Include="DTOs\FollowingDto.cs" />
     <Compile Include="Global.asax.cs">
@@ -296,13 +297,13 @@
     <Content Include="Views\Courses\Create.cshtml" />
     <Content Include="Views\Courses\Attending.cshtml" />
     <Content Include="Views\Courses\Index.cshtml" />
-    <Content Include="Views\Followings\Create.cshtml" />
-    <Content Include="Views\Followings\Delete.cshtml" />
-    <Content Include="Views\Followings\Details.cshtml" />
-    <Content Include="Views\Followings\Edit.cshtml" />
     <Content Include="Views\Followings\Index.cshtml" />
     <Content Include="Views\Followings\Following.cshtml" />
     <Content Include="Views\Courses\Mine.cshtml" />
+    <Content Include="Views\Search\Index.cshtml" />
+    <Content Include="Views\Home\Details.cshtml" />
+    <Content Include="Views\Followings\Feed.cshtml" />
+    <Content Include="Views\Followings\Delete.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

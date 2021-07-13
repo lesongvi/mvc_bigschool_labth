@@ -47,6 +47,66 @@ namespace ThucHanhLW2.Controllers
             return View(vm);
         }
 
+        [Authorize]
+        public ActionResult Feed ()
+        {
+            var userId = User.Identity.GetUserId();
+
+            List<Course> allCourses = new List<Course>();
+
+            var followings = _dbContext.Followings
+                .Where(a => a.FollowerId == userId)
+                .Select(u => u.FolloweeId)
+                .ToList();
+
+            foreach (string id in followings)
+            {
+                allCourses.AddRange(_dbContext.Courses
+                    .Where(c => c.LecturerId == id)
+                    .Include("Category")
+                    .Include("Lecturer")
+                    .ToList());
+            }
+
+            return View(allCourses);
+        }
+
+
+        [Authorize]
+        public ActionResult Delete(string id)
+        {
+            var userId = User.Identity.GetUserId();
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+
+            Following following = _dbContext.Followings
+                .Include(f => f.Followee)
+                .Include(f => f.Follower)
+                .Where(f => f.FollowerId == userId)
+                .Where(f => f.FolloweeId == id)
+                .FirstOrDefault();
+
+            if (following == null) return HttpNotFound();
+
+            return View(following);
+        }
+
+        // POST: Categories/Delete/5
+        [HttpPost, ActionName("Delete")]
+        [ValidateAntiForgeryToken]
+        public ActionResult DeleteConfirmed(string id)
+        {
+            var userId = User.Identity.GetUserId();
+            var following = _dbContext.Followings.Single(c => c.FolloweeId == id && c.FollowerId == userId);
+
+            _dbContext.Followings.Remove(following);
+            _dbContext.SaveChanges();
+
+            return RedirectToAction("Index");
+        }
+
         protected override void Dispose(bool disposing)
         {
             if (disposing)
