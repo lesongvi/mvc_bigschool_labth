@@ -42,6 +42,6 @@
         bootbox.alert(typeof e.responseJSON.Message != "undefined" ? e.responseJSON.Message : "Something failed!");
     }
     return {
-        init: init
+        init
     }
 }();

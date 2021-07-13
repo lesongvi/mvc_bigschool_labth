@@ -4,6 +4,7 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
+<h2>Khóa học đang theo dõi</h2>
 
 <ul class="course">
     @foreach (var course in Model.UpComingCourses)
@@ -42,8 +43,8 @@
 {
     <script>
         $(document).ready(() => {
-            CourseController.init();
             FollowController.init();
+            CourseController.initCourseUnfollowAction();
         });
     </script>
 }

@@ -34,14 +34,50 @@
                 })
             })
     }
+    var initMine = () => {
+        $(".js-cancel-course").click(e => {
+            e.preventDefault();
+            var link = $(e.target);
+            bootbox.confirm("Are you sure to cancel?",
+                confirm => {
+                    if (confirm)
+                        $.ajax({
+                            url: "/api/courses/" + link.attr("data-course-id"),
+                            method: "DELETE"
+                        })
+                            .done(() => doneCourseAction(link))
+                            .fail(fail);
+                });
+        });
+    }
+    var initCourseUnfollowAction = () => {
+        initAttendance();
+        $(".js-toggle-attendance").click(e => {
+            e.preventDefault();
+            var link = $(e.target);
+            $.ajax({
+                url: "/api/attendances/" + link.attr("data-course-id"),
+                method: "DELETE"
+            })
+                .done(() => doneCourseAction(link))
+                .fail(fail);
+        });
+    }
     var done = () => {
         var text = (btn.text() == "Going") ? "Going?" : "Going";
         btn.toggleClass("btn-info").toggleClass("btn-default").text(text);
+    }
+    var doneCourseAction = (link) => {
+        link.parents("li").fadeOut(() => {
+            $(this).remove();
+        });
     }
     var fail = (e) => {
         bootbox.alert(typeof e.responseJSON.Message != "undefined" ? e.responseJSON.Message : "Something failed!");
     }
     return {
-        init: init
+        init,
+        initCourseUnfollowAction,
+        initMine
     }
 }();
